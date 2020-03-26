@@ -65,6 +65,18 @@ namespace Simplicity.Services.Services
             }
         }
 
+        private void CovarianceExample()
+        {
+            IUserActivityService<BaseEntitity> userActivityService = new UserActivityService();
+            var userActivity = userActivityService.GetUserActivity();
+        }
+
+        private void ContravarianceExample()
+        {
+            IUserNotificationService<User> service = new UserNotificationService();
+            service.SetData(new User());
+        }
+
         public bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
         {
             if (password == null) throw new ArgumentNullException("password");

@@ -70,19 +70,16 @@ namespace Simplicity.Controllers
             {
                 return BadRequest();
             }
-
+            
             model.AssignedUsers = model.AssignedUsersAsString.Split(",").Select(x=>int.Parse(x)).ToArray();
             var entity = new Project();
             _mapper.Map(model, entity);
-
-            //map users to projects here
+            
             if (!_projectsService.Save(entity))
                 return StatusCode(500);
             if (!_projectsService.AssignUsers(entity.ID, model.AssignedUsers))
-            {
                 return StatusCode(500);
 
-            }
             var projectEditVM = _projectsService.GetAllProjectDtos(x => x.ID == entity.ID).FirstOrDefault();
 
             return Ok(projectEditVM);
