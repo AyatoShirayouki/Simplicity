@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  simplicity:
+    image: ${DOCKER_REGISTRY}simplicity
+    build:
+      context: .
+      dockerfile: Simplicity/Dockerfile

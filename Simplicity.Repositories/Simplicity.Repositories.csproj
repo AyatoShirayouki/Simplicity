@@ -1,0 +1,12 @@
+	<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Simplicity.DataContracts\Simplicity.DataContracts.csproj" />
+    <ProjectReference Include="..\Simplicity.Entities\Simplicity.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
