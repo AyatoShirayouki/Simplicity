@@ -29,31 +29,7 @@ namespace Simplicity.Services.Services
         {
             return _usersRepository.GetAllUserNameAndIdDtos(filter);
         }
-
-        //public override void OnBeforeAdd(User item)
-        //{
-        //    byte[] passwordHash, passwordSalt;
-        //    CreatePasswordHash(item.Password, out passwordHash, out passwordSalt);
-
-        //    item.PasswordHash = passwordHash;
-        //    item.PasswordSalt = passwordSalt;
-
-        //}
-
-        //public void OnBeforeEdit(User item)
-        //{
-        //    // update password if it was entered
-        //    if (!string.IsNullOrWhiteSpace(item.Password))
-        //    {
-        //        byte[] passwordHash, passwordSalt;
-        //        CreatePasswordHash(item.Password, out passwordHash, out passwordSalt);
-
-        //        item.PasswordHash = passwordHash;
-        //        item.PasswordSalt = passwordSalt;
-
-        //    }
-        //}
-
+        
         public void HashUserPassword(User user)
         {
             // update password if it was entered

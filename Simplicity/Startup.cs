@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Simplicity.Entities;
+using Simplicity.GlobalExceptionHandling;
 using Simplicity.Helpers;
 using Simplicity.Mappings;
 using Simplicity.Repositories.Repositories;
@@ -161,7 +162,7 @@ namespace Simplicity
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.ConfigureExceptionHandler();
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseSignalR(routes =>

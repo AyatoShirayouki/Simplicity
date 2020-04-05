@@ -19,26 +19,6 @@ namespace Simplicity.Entities.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Simplicity.Entities.Entities.Token", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("ExpirationDate");
-
-                    b.Property<int>("UserID");
-
-                    b.Property<string>("Value")
-                        .IsRequired();
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Tokens");
-                });
-
             modelBuilder.Entity("Simplicity.Entities.Project", b =>
                 {
                     b.Property<int>("ID")
@@ -133,14 +113,6 @@ namespace Simplicity.Entities.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("UsersProjects");
-                });
-
-            modelBuilder.Entity("Simplicity.Entities.Entities.Token", b =>
-                {
-                    b.HasOne("Simplicity.Entities.User", "User")
-                        .WithMany("Tokens")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Simplicity.Entities.Ticket", b =>
