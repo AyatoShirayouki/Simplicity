@@ -1,5 +1,4 @@
-﻿using Simplicity.Entities.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -24,8 +23,6 @@ namespace Simplicity.Entities
         public byte[] PasswordHash { get; set; }
 
         public byte[] PasswordSalt { get; set; }
-
-        public virtual ICollection<Token> Tokens { get; set; }
 
         public virtual ICollection<UserProject> UsersProjects { get; set; }
                 

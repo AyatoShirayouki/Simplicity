@@ -35,54 +35,30 @@ namespace Simplicity.Services.Services
             return _baseRepository.GetById(id);
         }
 
-        public bool Save(T item)
+        public void Save(T item)
         {
             try
             {
-                if (item.ID > 0)
-                {
-                    OnBeforeEdit(item);
-                }
-                else
-                {
-                    OnBeforeAdd(item);
-                }
-
                 _baseRepository.Save(item);
-                //_unitOfWork.Commit();
-                return true;
+                //_unitOfWork.Commit()
             }
             catch (Exception e)
             {
                 //_unitOfWork.RollBack();
-                return false;
             }
         }
 
-        public bool Delete(int id)
+        public void Delete(int id)
         {
             try
             {
                 _baseRepository.Delete(id);
                 //_unitOfWork.Commit();
-                return true;
             }
             catch (Exception)
             {
                 //_unitOfWork.RollBack();
-                return false;
             }
         }
-
-        public virtual void OnBeforeEdit(T item)
-        {
-
-        }
-
-        public virtual void OnBeforeAdd(T item)
-        {
-
-        }
-
     }
 }

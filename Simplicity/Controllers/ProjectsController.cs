@@ -68,15 +68,15 @@ namespace Simplicity.Controllers
         {
             if (model == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-            
+
+            //catch if AssignedUsersAsString is null
             model.AssignedUsers = model.AssignedUsersAsString.Split(",").Select(x=>int.Parse(x)).ToArray();
             var entity = new Project();
             _mapper.Map(model, entity);
             
-            if (!_projectsService.Save(entity))
-                return StatusCode(500);
+            _projectsService.Save(entity);
             if (!_projectsService.AssignUsers(entity.ID, model.AssignedUsers))
                 return StatusCode(500);
 
@@ -98,11 +98,10 @@ namespace Simplicity.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var isProjectDeleted = _projectsService.Delete(id);
-            if (!isProjectDeleted)
-            {
-                return BadRequest();
-            }
+            if (_projectsService.GetById(id) == null)
+                return NotFound();
+
+             _projectsService.Delete(id);
 
             return Ok();
         }

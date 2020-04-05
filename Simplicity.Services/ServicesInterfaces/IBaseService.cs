@@ -10,10 +10,10 @@ namespace Simplicity.Services.ServicesInterfaces
     {
         List<T> GetAll(Expression<Func<T, bool>> filter = null);
 
-        //T GetById(int id);
+        T GetById(int id);
         
-        bool Delete(int id);
+        void Delete(int id);
 
-        bool Save(T item);
+        void Save(T item);
     }
 }

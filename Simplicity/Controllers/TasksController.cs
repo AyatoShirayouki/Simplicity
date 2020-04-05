@@ -20,11 +20,11 @@ namespace Simplicity.Controllers
     {
         private readonly ITicketsService _tasksService;
         private readonly IMapper _mapper;
-        private IHubContext<LocationHub, ILocationHubService> _hubContext;
+        private IHubContext<MessageHub, IMessageHubService> _hubContext;
         private readonly IUsersService _usersService;
 
         public TasksController(ITicketsService tasksService,
-            IMapper mapper, IHubContext<LocationHub, ILocationHubService> hubContext,
+            IMapper mapper, IHubContext<MessageHub, IMessageHubService> hubContext,
             IUsersService usersService)
         {
             _tasksService = tasksService;
@@ -45,7 +45,7 @@ namespace Simplicity.Controllers
         {
             if (id == 0)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             var result = _tasksService.GetAllTaskDtos(x => x.AssigneeID == id);
@@ -77,9 +77,7 @@ namespace Simplicity.Controllers
             var changes = PrepareChanges(model);
 
             //map users to projects here
-            if (!_tasksService.Save(entity))
-                return StatusCode(500);
-
+            _tasksService.Save(entity);
 
             _hubContext.Clients.All.GetMessage(changes);
             return Ok(entity);
@@ -95,17 +93,14 @@ namespace Simplicity.Controllers
             }
             var ticketName = ticket.Name;
 
-            var isProjectDeleted = _tasksService.Delete(id);
-            if (!isProjectDeleted)
-            {
-                return StatusCode(500);
-            }
-
+            _tasksService.Delete(id);
             _hubContext.Clients.All.GetMessage($"{ticketName} was deleted");
             
             return Ok();
         }
 
+        //move to service
+        //rename to PrepareStatusChange
         private string PrepareChanges(TasksEditVM model)
         {
             var action = "was updated";

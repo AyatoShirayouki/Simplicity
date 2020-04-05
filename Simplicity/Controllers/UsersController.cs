@@ -12,7 +12,7 @@ using Simplicity.Services.ServicesInterfaces;
 using Simplicity.ViewModels;
 
 namespace Simplicity.Controllers
-{    
+{
     [Route("api/users")]
     [ApiController]
     [Authorize("Administrator")]
@@ -21,13 +21,13 @@ namespace Simplicity.Controllers
         private readonly IUsersService _usersService;
         private readonly IMapper _mapper;
 
-        public UsersController(IUsersService usersService, 
+        public UsersController(IUsersService usersService,
             IMapper mapper)
         {
             _usersService = usersService;
             _mapper = mapper;
         }
-        
+
         [HttpGet]
         public IActionResult Get()
         {
@@ -61,7 +61,7 @@ namespace Simplicity.Controllers
 
             return Ok(userDto);
         }
-        
+
         [HttpPost]
         public IActionResult Post([FromForm] UsersEditVM model, IFormFile file)
         {
@@ -69,10 +69,11 @@ namespace Simplicity.Controllers
             {
                 return BadRequest();
             }
-            
+
             var entity = new User();
             _mapper.Map(model, entity);
-
+            _usersService.HashUserPassword(entity);
+            //Use user picture or remove file saving
             if (file != null)
             {
                 byte[] fileBytes;
@@ -86,21 +87,20 @@ namespace Simplicity.Controllers
                 entity.PicturePath = fileHelper.SaveFile(fileBytes, entity.Username, file.FileName);
             }
 
-            if (!_usersService.Save(entity))
-                return StatusCode(500);
+            _usersService.Save(entity);
 
             return Ok(entity);
 
         }
-        
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var isUserDeleted = _usersService.Delete(id);
-            if (!isUserDeleted)
-            {
-                return BadRequest();
-            }
+            if (_usersService.GetById(id) == null)
+                return NotFound();
+
+            _usersService.Delete(id);
+
             return Ok();
         }
     }

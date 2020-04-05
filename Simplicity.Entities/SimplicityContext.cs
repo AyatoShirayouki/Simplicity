@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Simplicity.Entities.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +11,6 @@ namespace Simplicity.Entities
         public DbSet<Project> Projects { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<UserProject> UsersProjects { get; set; }
-        public DbSet<Token> Tokens { get; set; }
 
         public SimplicityContext(DbContextOptions<SimplicityContext> options):base(options)
         {

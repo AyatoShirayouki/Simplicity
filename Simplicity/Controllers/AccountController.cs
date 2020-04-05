@@ -47,18 +47,14 @@ namespace Simplicity.Controllers
             var user = _accountService.Authenticate(username, password);
 
             if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return NotFound(new { message = "Username or password is incorrect" });
             var tokenString = _accountService.CreateToken(user, _appSettings).Result;
 
             if (string.IsNullOrEmpty(tokenString))
             {
                 return BadRequest();
             }
-            //var appIdentity = new ClaimsIdentity(claims);
-
-            //var httpUser = new GenericPrincipal(new ClaimsIdentity(claims), new string[] { "User" });
-            //HttpContext.User = httpUser;
-
+           
             // return basic user info (without password) and token to store client side
             return Ok(new { id = user.ID, userName = user.Username, role = user.Role, token = tokenString });
         }
@@ -71,18 +67,8 @@ namespace Simplicity.Controllers
             var user = _mapper.Map<User>(userDto);
             user.Role = Role.User;
 
-            try
-            {
-                // save 
-                _usersService.Save(user);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                // return error message if there was an exception
-                return BadRequest(new { message = ex.Message });
-            }
-
+            _usersService.Save(user);
+            return Ok();
         }
 
         [AllowAnonymous]
@@ -95,9 +81,9 @@ namespace Simplicity.Controllers
 
             if (userID == 0)
             {
-                return BadRequest(new { message = "Invalid User ID" });
-
+                return NotFound(new { message = "Invalid User ID" });
             }
+
             var user = _usersService.GetById(userID);
             // map dto to entity
             if (user.Password != changePasswordDto.OldPassword)
@@ -106,18 +92,9 @@ namespace Simplicity.Controllers
             }
 
             user.Password = changePasswordDto.NewPassword;
-            try
-            {
-                // save 
-                _usersService.Save(user);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                // return error message if there was an exception
-                return BadRequest(new { message = ex.Message });
-            }
+           
+            _usersService.Save(user);
+            return Ok();
         }
-
     }
 }

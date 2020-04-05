@@ -22,7 +22,6 @@ using Simplicity.Helpers;
 using Simplicity.Mappings;
 using Simplicity.Repositories.Repositories;
 using Simplicity.Repositories.RepositoryInterfaces;
-using Simplicity.Requirement;
 using Simplicity.Services.Services;
 using Simplicity.Services.ServicesInterfaces;
 using Swashbuckle.AspNetCore.Swagger;
@@ -166,7 +165,7 @@ namespace Simplicity
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseSignalR(routes =>
-               routes.MapHub<LocationHub>("/location")
+               routes.MapHub<MessageHub>("/location")
            );
             app.UseSwagger();
             app.UseSwaggerUI(c =>

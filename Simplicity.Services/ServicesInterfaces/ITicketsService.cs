@@ -7,9 +7,8 @@ using System.Text;
 
 namespace Simplicity.Services.ServicesInterfaces
 {
-    public interface ITicketsService : IBaseService<Ticket>, IGetBaseService<Ticket>
+    public interface ITicketsService : IBaseService<Ticket>
     {
         List<TaskDto> GetAllTaskDtos(Expression<Func<Ticket, bool>> filter);
-        //List<>
     }
 }
