@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using Simplicity.DataContracts.Dtos;
+using Simplicity.DataContracts.Dtos.Projects;
+using Simplicity.DataContracts.Dtos.Tasks;
+using Simplicity.DataContracts.Dtos.Users;
 using Simplicity.Entities;
 using Simplicity.ViewModels;
 using Simplicity.ViewModels.Projects;
@@ -15,14 +18,19 @@ namespace Simplicity.Mappings
     {
         public AutomapperMappings()
         {
-            CreateMap<UsersListVM, UserDto>();
-            CreateMap<UsersEditVM, User>().ForMember(u=>u.UsersProjects, opt=>opt.Ignore());
+            CreateMap<UsersListVM, UserListDto>();
+            CreateMap<User, UserDto>();
+            CreateMap<UsersEditVM, UserEditDto>();
+            CreateMap<UserEditDto, User>();
+            CreateMap<User, UsersListVM>();
 
-            CreateMap<TasksEditVM, Ticket>();
+            CreateMap<TasksEditVM, TaskEditDto>();
 
 
             CreateMap<ProjectsListVM, ProjectDto>();
-            CreateMap<ProjectsEditVM, Project>().ForMember(u => u.UsersProjects, opt => opt.Ignore());
+            CreateMap<ProjectsEditVM, ProjectEditDto>();
+            CreateMap<ProjectEditDto, Project>().ForMember(u => u.UsersProjects, opt => opt.Ignore());
+
         }
     }
 }

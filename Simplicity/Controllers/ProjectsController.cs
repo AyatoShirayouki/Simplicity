@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Simplicity.DataContracts.Dtos.Projects;
 using Simplicity.Entities;
 using Simplicity.Services.ServicesInterfaces;
 using Simplicity.ViewModels.Projects;
@@ -73,14 +74,14 @@ namespace Simplicity.Controllers
 
             //catch if AssignedUsersAsString is null
             model.AssignedUsers = model.AssignedUsersAsString.Split(",").Select(x=>int.Parse(x)).ToArray();
-            var entity = new Project();
-            _mapper.Map(model, entity);
+            var projectEditDto = new ProjectEditDto();
+            _mapper.Map(model, projectEditDto);
             
-            _projectsService.Save(entity);
-            if (!_projectsService.AssignUsers(entity.ID, model.AssignedUsers))
+            _projectsService.SaveProject(projectEditDto);
+            if (!_projectsService.AssignUsers(projectEditDto.ID, model.AssignedUsers))
                 return StatusCode(500);
 
-            var projectEditVM = _projectsService.GetAllProjectDtos(x => x.ID == entity.ID).FirstOrDefault();
+            var projectEditVM = _projectsService.GetAllProjectDtos(x => x.ID == projectEditDto.ID).FirstOrDefault();
 
             return Ok(projectEditVM);
         }

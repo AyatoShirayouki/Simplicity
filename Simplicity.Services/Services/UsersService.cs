@@ -1,4 +1,6 @@
-﻿using Simplicity.DataContracts.Dtos;
+﻿using AutoMapper;
+using Simplicity.DataContracts.Dtos;
+using Simplicity.DataContracts.Dtos.Users;
 using Simplicity.Entities;
 using Simplicity.Repositories.Repositories;
 using Simplicity.Repositories.RepositoryInterfaces;
@@ -12,13 +14,16 @@ namespace Simplicity.Services.Services
     public class UsersService : BaseService<User>, IUsersService
     {
         private readonly IUsersRepository _usersRepository;
+        private readonly IMapper _mapper;
 
-        public UsersService(IUsersRepository usersRepository) : base(usersRepository)
+        public UsersService(IUsersRepository usersRepository,
+            IMapper mapper) : base(usersRepository)
         {
             _usersRepository = usersRepository;
+            _mapper = mapper;
         }
 
-        List<UserDto> IUsersService.GetAllUserDtos(Expression<Func<User, bool>> filter)
+        List<UserListDto> IUsersService.GetAllUserDtos(Expression<Func<User, bool>> filter)
         {
             IBaseRepository<User> repo = new UsersRepository();
 
@@ -30,7 +35,7 @@ namespace Simplicity.Services.Services
             return _usersRepository.GetAllUserNameAndIdDtos(filter);
         }
         
-        public void HashUserPassword(User user)
+        public void HashUserPassword(UserEditDto user)
         {
             // update password if it was entered
             if (!string.IsNullOrWhiteSpace(user.Password))
@@ -84,6 +89,19 @@ namespace Simplicity.Services.Services
             }
 
             return true;
+        }
+        
+        public void SaveUser(UserEditDto userEditDto)
+        {
+            var entity = new User();
+            _mapper.Map(userEditDto, entity);
+            this.Save(entity);
+        }
+
+        new public UserEditDto GetById(int userId)
+        {
+            var user = this.GetById(userId);
+            return _mapper.Map(user, new UserEditDto());
         }
     }
 }

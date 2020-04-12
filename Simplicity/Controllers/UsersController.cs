@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Simplicity.DataContracts.Dtos.Users;
 using Simplicity.Entities;
 using Simplicity.Services.ServicesInterfaces;
 using Simplicity.ViewModels;
@@ -70,7 +71,7 @@ namespace Simplicity.Controllers
                 return BadRequest();
             }
 
-            var entity = new User();
+            var entity = new UserEditDto();
             _mapper.Map(model, entity);
             _usersService.HashUserPassword(entity);
             //Use user picture or remove file saving
@@ -87,7 +88,7 @@ namespace Simplicity.Controllers
                 entity.PicturePath = fileHelper.SaveFile(fileBytes, entity.Username, file.FileName);
             }
 
-            _usersService.Save(entity);
+            _usersService.SaveUser(entity);
 
             return Ok(entity);
 

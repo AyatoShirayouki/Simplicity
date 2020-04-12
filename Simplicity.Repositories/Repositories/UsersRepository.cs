@@ -20,10 +20,10 @@ namespace Simplicity.Repositories.Repositories
         {
 
         }
-        public List<UserDto> GetAllUserDtos(Expression<Func<User, bool>> filter)
+        public List<UserListDto> GetAllUserDtos(Expression<Func<User, bool>> filter)
         {
             var result = dbSet.Where(filter).Select(u =>
-                          new UserDto
+                          new UserListDto
                           {
                               ID = u.ID,
                               Address = u.Address,

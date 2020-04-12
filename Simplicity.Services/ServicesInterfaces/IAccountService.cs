@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using Simplicity.DataContracts.Dtos;
 using Simplicity.Entities;
 using Simplicity.Helpers;
 using System;
@@ -11,8 +12,8 @@ namespace Simplicity.Services.ServicesInterfaces
 {
     public interface IAccountService
     {
-        User Authenticate(string username, string password);
-        Task<string> CreateToken(User user, IOptions<AppSettings> appSettings);
+        UserListDto Authenticate(string username, string password);
+        Task<string> CreateToken(UserListDto user, IOptions<AppSettings> appSettings);
         ClaimsPrincipal ValidateToken(string authToken);
     }
 }

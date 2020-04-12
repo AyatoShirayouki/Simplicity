@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Simplicity.DataContracts;
+using Simplicity.DataContracts.Dtos.Users;
 using Simplicity.Entities;
 using Simplicity.Helpers;
 using Simplicity.Services.ServicesInterfaces;
@@ -61,13 +62,12 @@ namespace Simplicity.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromForm]UsersEditVM userDto)
+        public IActionResult Register([FromForm]UsersEditVM userEditVM)
         {
-            // map dto to entity
-            var user = _mapper.Map<User>(userDto);
+            var user = _mapper.Map<UserEditDto>(userEditVM);
             user.Role = Role.User;
 
-            _usersService.Save(user);
+            _usersService.SaveUser(user);
             return Ok();
         }
 
@@ -93,7 +93,7 @@ namespace Simplicity.Controllers
 
             user.Password = changePasswordDto.NewPassword;
            
-            _usersService.Save(user);
+            _usersService.SaveUser(user);
             return Ok();
         }
     }

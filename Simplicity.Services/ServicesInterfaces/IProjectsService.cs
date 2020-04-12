@@ -1,4 +1,5 @@
 ﻿using Simplicity.DataContracts.Dtos;
+using Simplicity.DataContracts.Dtos.Projects;
 using Simplicity.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,7 @@ namespace Simplicity.Services.ServicesInterfaces
         List<NameAndIDDto> GetAllProjectNameAndIdDtos(Expression<Func<Project, bool>> filter);
 
         bool AssignUsers(int projectID, int[] userIDs);
+
+        void SaveProject(ProjectEditDto projectEditDto);
     }
 }

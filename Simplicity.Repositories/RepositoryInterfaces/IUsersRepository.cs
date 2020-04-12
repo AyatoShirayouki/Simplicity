@@ -9,7 +9,7 @@ namespace Simplicity.Repositories.RepositoryInterfaces
 {
     public interface IUsersRepository : IBaseRepository<User>
     {
-        List<UserDto> GetAllUserDtos(Expression<Func<User, bool>> filter = null);
+        List<UserListDto> GetAllUserDtos(Expression<Func<User, bool>> filter = null);
         List<NameAndIDDto> GetAllUserNameAndIdDtos(Expression<Func<User, bool>> filter);
     }
 }

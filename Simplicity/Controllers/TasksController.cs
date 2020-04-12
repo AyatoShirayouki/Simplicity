@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Simplicity.DataContracts.Dtos.Tasks;
 using Simplicity.Entities;
 using Simplicity.Helpers;
 using Simplicity.Services.ServicesInterfaces;
@@ -55,7 +56,7 @@ namespace Simplicity.Controllers
         [HttpGet("{id}", Name = "tasks/getByID")]
         public IActionResult GetByID(int id)
         {
-            var model = _tasksService.GetAll(x => x.ID == id).FirstOrDefault();
+            var model = _tasksService.GetAllTaskDtos(x => x.ID == id).FirstOrDefault();
 
             if (model == null)
                 return NotFound();
@@ -71,13 +72,13 @@ namespace Simplicity.Controllers
                 return BadRequest();
             }
 
-            var entity = new Ticket();
+            var entity = new TaskEditDto();
             _mapper.Map(model, entity);
 
             var changes = PrepareChanges(model);
 
             //map users to projects here
-            _tasksService.Save(entity);
+            _tasksService.SaveTicket(entity);
 
             _hubContext.Clients.All.GetMessage(changes);
             return Ok(entity);
@@ -86,7 +87,7 @@ namespace Simplicity.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var ticket = _tasksService.GetById(id);
+            var ticket = _tasksService.GetAllTaskDtos(x => x.ID == id).FirstOrDefault();
             if (ticket == null)
             {
                 return NotFound();

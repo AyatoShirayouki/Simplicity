@@ -1,4 +1,6 @@
-﻿using Simplicity.DataContracts.Dtos;
+﻿using AutoMapper;
+using Simplicity.DataContracts.Dtos;
+using Simplicity.DataContracts.Dtos.Projects;
 using Simplicity.Entities;
 using Simplicity.Repositories.Repositories;
 using Simplicity.Repositories.RepositoryInterfaces;
@@ -15,12 +17,16 @@ namespace Simplicity.Services.Services
     {
         private readonly IProjectsRepository _projectsRepository;
         private readonly IUsersProjectsRepository _usersProjectsRepository;
+        private readonly IMapper _mapper;
 
         public ProjectsService(IProjectsRepository projectsRepository,
-                IUsersProjectsRepository usersProjectsRepository) : base(projectsRepository)
+                IUsersProjectsRepository usersProjectsRepository,
+                IMapper mapper) 
+            : base(projectsRepository)
         {
             _projectsRepository = projectsRepository;
             _usersProjectsRepository = usersProjectsRepository;
+            _mapper = mapper;
         }
 
         public bool AssignUsers(int projectID, int[] userIDs)
@@ -73,7 +79,13 @@ namespace Simplicity.Services.Services
         public List<NameAndIDDto> GetAllProjectNameAndIdDtos(Expression<Func<Project, bool>> filter)
         {
             return _projectsRepository.GetAllProjectNameAndIdDtos(filter);
+        }
 
+        public void SaveProject(ProjectEditDto projectEditDto)
+        {
+            var entity = new Project();
+            _mapper.Map(projectEditDto, entity);
+            this.Save(entity);
         }
     }
 }

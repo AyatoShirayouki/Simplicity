@@ -1,4 +1,5 @@
-﻿using Simplicity.Entities;
+﻿using Simplicity.DataContracts;
+using Simplicity.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

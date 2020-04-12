@@ -13,6 +13,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Simplicity.Helpers;
+using AutoMapper;
+using Simplicity.DataContracts.Dtos;
 
 namespace Simplicity.Services.Services
 {
@@ -20,14 +22,17 @@ namespace Simplicity.Services.Services
     {
         private readonly IUsersService _usersService;
         private readonly AppSettings _appSettings;
+        private readonly IMapper _mapper;
 
-        public AccountService(IUsersService usersService, AppSettings appSettings)
+        public AccountService(IUsersService usersService, AppSettings appSettings,
+            IMapper mapper)
         {
             _usersService = usersService;
             _appSettings = appSettings;
+            _mapper = mapper;
         }
 
-        public User Authenticate(string username, string password)
+        public UserListDto Authenticate(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return null;
@@ -42,11 +47,13 @@ namespace Simplicity.Services.Services
             if (!_usersService.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 return null;
 
+            var userDto = new UserListDto();
+            _mapper.Map(user, userDto);
             // authentication successful
-            return user;
+            return userDto;
         }
 
-        public async Task<string> CreateToken(User user, IOptions<AppSettings> appSettings)
+        public async Task<string> CreateToken(UserListDto user, IOptions<AppSettings> appSettings)
         {
             var utcNow = DateTime.UtcNow;
             var config = appSettings.Value;
