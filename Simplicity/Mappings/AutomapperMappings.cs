@@ -23,9 +23,10 @@ namespace Simplicity.Mappings
             CreateMap<UsersEditVM, UserEditDto>();
             CreateMap<UserEditDto, User>();
             CreateMap<User, UsersListVM>();
+            CreateMap<User, UserListDto>().ForMember(u=>u.Role, opt => opt.Ignore());
 
             CreateMap<TasksEditVM, TaskEditDto>();
-
+            CreateMap<TaskEditDto, Task>();
 
             CreateMap<ProjectsListVM, ProjectDto>();
             CreateMap<ProjectsEditVM, ProjectEditDto>();

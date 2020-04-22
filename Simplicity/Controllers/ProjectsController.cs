@@ -15,7 +15,6 @@ namespace Simplicity.Controllers
 {
     [Route("api/projects")]
     [ApiController]
-    [Authorize("AdminMod")]
     public class ProjectsController : ControllerBase
     {
         private readonly IProjectsService _projectsService;
@@ -32,6 +31,8 @@ namespace Simplicity.Controllers
         }
 
         [HttpGet]
+        [Authorize("AdminMod")]
+
         public IActionResult Get()
         {
             var result = _projectsService.GetAllProjectDtos(x=> true);
@@ -39,6 +40,7 @@ namespace Simplicity.Controllers
         }
 
         [HttpGet("getProjectNameAndIds")]
+        [Authorize("AdminMod")]
         public IActionResult GetProjectNameAndIds()
         {
             var result = _projectsService.GetAllProjectNameAndIdDtos(x => true);
@@ -47,13 +49,14 @@ namespace Simplicity.Controllers
 
 
         [HttpGet("getProjectByUserId")]
-        public IActionResult GetProjecstByUserId(int id)
+        public IActionResult GetProjectByUserId(int id)
         {
             var result = _projectsService.GetAllProjectNameAndIdDtos(x => x.UsersProjects.Any(u => u.UserID == id));
             return Ok(result);
         }
 
         [HttpGet("{id}", Name = "projects/getByID")]
+        [Authorize("AdminMod")]
         public IActionResult GetByID(int id)
         {
             var model = _projectsService.GetAllProjectDtos(x => x.ID == id).FirstOrDefault();
@@ -65,6 +68,7 @@ namespace Simplicity.Controllers
         }
         
         [HttpPost]
+        [Authorize("AdminMod")]
         public IActionResult Post([FromForm] ProjectsEditVM model)
         {
             if (model == null)
@@ -72,21 +76,25 @@ namespace Simplicity.Controllers
                 return NotFound();
             }
 
-            //catch if AssignedUsersAsString is null
-            model.AssignedUsers = model.AssignedUsersAsString.Split(",").Select(x=>int.Parse(x)).ToArray();
+            model.AssignedUsers = new int[0];
+
+            if (!string.IsNullOrEmpty(model.AssignedUsersAsString))
+            {
+                model.AssignedUsers = model.AssignedUsersAsString.Split(",").Select(x => int.Parse(x)).ToArray();
+            }
+
             var projectEditDto = new ProjectEditDto();
             _mapper.Map(model, projectEditDto);
             
-            _projectsService.SaveProject(projectEditDto);
-            if (!_projectsService.AssignUsers(projectEditDto.ID, model.AssignedUsers))
-                return StatusCode(500);
-
+            _projectsService.SaveProject(projectEditDto, model.AssignedUsers);
+            
             var projectEditVM = _projectsService.GetAllProjectDtos(x => x.ID == projectEditDto.ID).FirstOrDefault();
 
             return Ok(projectEditVM);
         }
         
         [HttpPost("{id}", Name = "projects/assignUsers")]
+        [Authorize("AdminMod")]
         public IActionResult AssingUsers(int projectID, int[] userIDs)
         {
             //map users to projects here
@@ -97,6 +105,7 @@ namespace Simplicity.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize("AdminMod")]
         public IActionResult Delete(int id)
         {
             if (_projectsService.GetById(id) == null)

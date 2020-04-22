@@ -94,11 +94,21 @@ namespace Simplicity.Services.Services
         public void SaveUser(UserEditDto userEditDto)
         {
             var entity = new User();
+
+            if (userEditDto.ID != 0)
+            {
+                entity = this.GetById(userEditDto.ID);
+            }
+
+            entity.Name = userEditDto.Name;
+            entity.Address = userEditDto.Address;
+            entity.Role = userEditDto.Role;
+
             _mapper.Map(userEditDto, entity);
             this.Save(entity);
         }
 
-        new public UserEditDto GetById(int userId)
+        public UserEditDto GetUserEditDtoById(int userId)
         {
             var user = this.GetById(userId);
             return _mapper.Map(user, new UserEditDto());

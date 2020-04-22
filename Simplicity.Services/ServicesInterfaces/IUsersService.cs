@@ -14,6 +14,6 @@ namespace Simplicity.Services.ServicesInterfaces
         bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt);
         void HashUserPassword(UserEditDto user);
         void SaveUser(UserEditDto userEditDto);
-        new UserEditDto GetById(int id);
+        UserEditDto GetUserEditDtoById(int userId);
     }
 }

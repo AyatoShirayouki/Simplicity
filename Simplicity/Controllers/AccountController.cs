@@ -84,7 +84,7 @@ namespace Simplicity.Controllers
                 return NotFound(new { message = "Invalid User ID" });
             }
 
-            var user = _usersService.GetById(userID);
+            var user = _usersService.GetUserEditDtoById(userID);
             // map dto to entity
             if (user.Password != changePasswordDto.OldPassword)
             {
@@ -92,7 +92,7 @@ namespace Simplicity.Controllers
             }
 
             user.Password = changePasswordDto.NewPassword;
-           
+           _usersService.HashUserPassword(user);
             _usersService.SaveUser(user);
             return Ok();
         }

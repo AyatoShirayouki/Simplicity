@@ -81,11 +81,22 @@ namespace Simplicity.Services.Services
             return _projectsRepository.GetAllProjectNameAndIdDtos(filter);
         }
 
-        public void SaveProject(ProjectEditDto projectEditDto)
+        public void SaveProject(ProjectEditDto projectEditDto, int[] assignedUsers)
         {
             var entity = new Project();
-            _mapper.Map(projectEditDto, entity);
+
+            if (projectEditDto.ID !=0)
+            {
+                entity = GetById(projectEditDto.ID);
+            }
+
+            entity.Name = projectEditDto.Name;
+            entity.FromDate = projectEditDto.FromDate;
+            entity.ToDate = projectEditDto.ToDate;
+            
             this.Save(entity);
+
+            this.AssignUsers(entity.ID, assignedUsers);
         }
     }
 }

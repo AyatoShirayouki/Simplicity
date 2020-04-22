@@ -31,7 +31,20 @@ namespace Simplicity.Services.Services
         public void SaveTicket(TaskEditDto taskDto)
         {
             var entity = new Ticket();
-            _mapper.Map(taskDto, entity);
+
+            if (taskDto.ID != 0)
+            {
+                entity = this.GetById(taskDto.ID);
+            }
+
+            entity.Name = taskDto.Name;
+            entity.ProjectID = taskDto.ProjectID;
+            entity.Status = taskDto.Status;
+            entity.DueDate = taskDto.DueDate;
+            entity.AssigneeID = taskDto.AssigneeID;
+            entity.CreatorID = taskDto.CreatorID;
+            entity.Description = taskDto.Description;
+            
             this.Save(entity);
         }
     }

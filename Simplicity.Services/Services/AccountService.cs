@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Simplicity.Helpers;
 using AutoMapper;
 using Simplicity.DataContracts.Dtos;
+using Simplicity.DataContracts.Dtos.Users;
 
 namespace Simplicity.Services.Services
 {
@@ -32,7 +33,7 @@ namespace Simplicity.Services.Services
             _mapper = mapper;
         }
 
-        public UserListDto Authenticate(string username, string password)
+        public UserEditDto Authenticate(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return null;
@@ -47,13 +48,14 @@ namespace Simplicity.Services.Services
             if (!_usersService.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 return null;
 
-            var userDto = new UserListDto();
+            var userDto = new UserEditDto();
+            //error mapping between role and nameandiddto
             _mapper.Map(user, userDto);
             // authentication successful
             return userDto;
         }
 
-        public async Task<string> CreateToken(UserListDto user, IOptions<AppSettings> appSettings)
+        public async Task<string> CreateToken(UserEditDto user, IOptions<AppSettings> appSettings)
         {
             var utcNow = DateTime.UtcNow;
             var config = appSettings.Value;

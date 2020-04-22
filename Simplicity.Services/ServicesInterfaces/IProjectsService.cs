@@ -15,6 +15,8 @@ namespace Simplicity.Services.ServicesInterfaces
 
         bool AssignUsers(int projectID, int[] userIDs);
 
-        void SaveProject(ProjectEditDto projectEditDto);
+        void SaveProject(ProjectEditDto projectEditDto, int[] assignedUsers);
+
+        //ProjectDto GetDtoById(int id);
     }
 }
