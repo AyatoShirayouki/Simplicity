@@ -113,5 +113,11 @@ namespace Simplicity.Services.Services
             var user = this.GetById(userId);
             return _mapper.Map(user, new UserEditDto());
         }
+
+        public UserListDto GetUserListDtoById(int userId)
+        {
+            var user = this.GetById(userId);
+            return _mapper.Map(user, new UserListDto());
+        }
     }
 }

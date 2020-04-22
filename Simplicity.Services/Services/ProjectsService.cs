@@ -98,5 +98,11 @@ namespace Simplicity.Services.Services
 
             this.AssignUsers(entity.ID, assignedUsers);
         }
+
+        public ProjectDto GetDtoById(int id)
+        {
+            var project = this.GetById(id);
+            return _mapper.Map(project, new ProjectDto());
+        }
     }
 }

@@ -44,8 +44,14 @@ namespace Simplicity.Services.Services
             entity.AssigneeID = taskDto.AssigneeID;
             entity.CreatorID = taskDto.CreatorID;
             entity.Description = taskDto.Description;
-            
+
             this.Save(entity);
+        }
+
+        public TaskDto GetTaskDtoById(int id)
+        {
+            var task = this.GetById(id);
+            return _mapper.Map(task, new TaskDto());
         }
     }
 }

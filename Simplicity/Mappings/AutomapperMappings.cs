@@ -27,10 +27,12 @@ namespace Simplicity.Mappings
 
             CreateMap<TasksEditVM, TaskEditDto>();
             CreateMap<TaskEditDto, Task>();
+            CreateMap<TaskDto, Task>(); //check that mapping
 
             CreateMap<ProjectsListVM, ProjectDto>();
             CreateMap<ProjectsEditVM, ProjectEditDto>();
-            CreateMap<ProjectEditDto, Project>().ForMember(u => u.UsersProjects, opt => opt.Ignore());
+            CreateMap<ProjectEditDto, Project>().ForMember(u => u.UsersProjects, opt => opt.Ignore())
+                                                .ReverseMap();
 
         }
     }

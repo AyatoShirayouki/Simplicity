@@ -55,7 +55,7 @@ namespace Simplicity.Controllers
         [HttpGet("{id}", Name = "GetByID")]
         public IActionResult GetByID(int id)
         {
-            var userDto = _usersService.GetAllUserDtos(x => x.ID == id).FirstOrDefault();
+            var userDto = _usersService.GetUserListDtoById(id);
 
             if (userDto == null)
                 return NotFound();
@@ -74,19 +74,6 @@ namespace Simplicity.Controllers
             var entity = new UserEditDto();
             _mapper.Map(model, entity);
             _usersService.HashUserPassword(entity);
-            //Use user picture or remove file saving
-            if (file != null)
-            {
-                byte[] fileBytes;
-                using (var ms = new MemoryStream())
-                {
-                    file.CopyTo(ms);
-                    fileBytes = ms.ToArray();
-                }
-
-                var fileHelper = new FileHelper();
-                entity.PicturePath = fileHelper.SaveFile(fileBytes, entity.Username, file.FileName);
-            }
 
             _usersService.SaveUser(entity);
 

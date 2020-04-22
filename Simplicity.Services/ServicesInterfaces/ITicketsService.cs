@@ -12,5 +12,6 @@ namespace Simplicity.Services.ServicesInterfaces
     {
         List<TaskDto> GetAllTaskDtos(Expression<Func<Ticket, bool>> filter);
         void SaveTicket(TaskEditDto taskDto);
+        TaskDto GetTaskDtoById(int id);
     }
 }

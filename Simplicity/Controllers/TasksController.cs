@@ -56,7 +56,7 @@ namespace Simplicity.Controllers
         [HttpGet("{id}", Name = "tasks/getByID")]
         public IActionResult GetByID(int id)
         {
-            var model = _tasksService.GetAllTaskDtos(x => x.ID == id).FirstOrDefault();
+            var model = _tasksService.GetTaskDtoById(id);
 
             if (model == null)
                 return NotFound();
@@ -87,7 +87,7 @@ namespace Simplicity.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var ticket = _tasksService.GetAllTaskDtos(x => x.ID == id).FirstOrDefault();
+            var ticket = _tasksService.GetTaskDtoById(id);
             if (ticket == null)
             {
                 return NotFound();

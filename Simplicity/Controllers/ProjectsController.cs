@@ -59,7 +59,7 @@ namespace Simplicity.Controllers
         [Authorize("AdminMod")]
         public IActionResult GetByID(int id)
         {
-            var model = _projectsService.GetAllProjectDtos(x => x.ID == id).FirstOrDefault();
+            var model = _projectsService.GetDtoById(id);
 
             if (model == null)
                 return NotFound();
@@ -87,8 +87,8 @@ namespace Simplicity.Controllers
             _mapper.Map(model, projectEditDto);
             
             _projectsService.SaveProject(projectEditDto, model.AssignedUsers);
-            
-            var projectEditVM = _projectsService.GetAllProjectDtos(x => x.ID == projectEditDto.ID).FirstOrDefault();
+
+            var projectEditVM = _projectsService.GetDtoById(projectEditDto.ID);
 
             return Ok(projectEditVM);
         }
