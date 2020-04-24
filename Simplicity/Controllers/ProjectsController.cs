@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Simplicity.DataContracts;
+using Simplicity.DataContracts.Dtos;
 using Simplicity.DataContracts.Dtos.Projects;
 using Simplicity.Entities;
 using Simplicity.Services.ServicesInterfaces;
@@ -51,7 +54,15 @@ namespace Simplicity.Controllers
         [HttpGet("getProjectByUserId")]
         public IActionResult GetProjectByUserId(int id)
         {
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
             var result = _projectsService.GetAllProjectNameAndIdDtos(x => x.UsersProjects.Any(u => u.UserID == id));
+
+            if (role == Role.Administrator.ToString() || 
+                role == Role.Moderator.ToString())
+            {
+                result= _projectsService.GetAllProjectNameAndIdDtos(x => true);
+            }
+
             return Ok(result);
         }
 

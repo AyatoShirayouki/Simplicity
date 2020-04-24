@@ -75,9 +75,8 @@ namespace Simplicity.Controllers
             var entity = new TaskEditDto();
             _mapper.Map(model, entity);
 
-            var changes = PrepareChanges(model);
-
-            //map users to projects here
+            var changes = PrepareStatusChange(model);
+            
             _tasksService.SaveTicket(entity);
 
             _hubContext.Clients.All.GetMessage(changes);
@@ -99,10 +98,8 @@ namespace Simplicity.Controllers
             
             return Ok();
         }
-
-        //move to service
-        //rename to PrepareStatusChange
-        private string PrepareChanges(TasksEditVM model)
+        
+        private string PrepareStatusChange(TasksEditVM model)
         {
             var action = "was updated";
 

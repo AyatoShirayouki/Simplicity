@@ -85,7 +85,7 @@ namespace Simplicity.Controllers
             }
 
             var user = _usersService.GetUserEditDtoById(userID);
-            // map dto to entity
+           
             if (user.Password != changePasswordDto.OldPassword)
             {
                 return BadRequest(new { message = "Invalid Old password. Please fill again" });
