@@ -17,6 +17,7 @@ using Simplicity.ViewModels.Projects;
 namespace Simplicity.Controllers
 {
     [Route("api/projects")]
+    [Authorize]
     [ApiController]
     public class ProjectsController : ControllerBase
     {
@@ -35,7 +36,6 @@ namespace Simplicity.Controllers
 
         [HttpGet]
         [Authorize("AdminMod")]
-
         public IActionResult Get()
         {
             var result = _projectsService.GetAllProjectDtos(x=> true);

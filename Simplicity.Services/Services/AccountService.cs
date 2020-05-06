@@ -49,7 +49,7 @@ namespace Simplicity.Services.Services
                 return null;
 
             var userDto = new UserEditDto();
-            //error mapping between role and nameandiddto
+            
             _mapper.Map(user, userDto);
             // authentication successful
             return userDto;

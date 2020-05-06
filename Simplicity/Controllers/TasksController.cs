@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -16,12 +17,14 @@ using Simplicity.ViewModels.Tasks;
 namespace Simplicity.Controllers
 {
     [Route("api/tasks")]
+    //[Authorize]
     [ApiController]
     public class TasksController : ControllerBase
     {
         private readonly ITicketsService _tasksService;
         private readonly IMapper _mapper;
-        private IHubContext<MessageHub, IMessageHubService> _hubContext;
+        //private readonly IMessageHubService _messageHubService;
+        private IHubContext<MessageHub, IMessageHubService> _messageHubService;
         private readonly IUsersService _usersService;
 
         public TasksController(ITicketsService tasksService,
@@ -30,7 +33,7 @@ namespace Simplicity.Controllers
         {
             _tasksService = tasksService;
             _mapper = mapper;
-            _hubContext = hubContext;
+            _messageHubService = hubContext;
             _usersService = usersService;
         }
 
@@ -38,6 +41,7 @@ namespace Simplicity.Controllers
         public IActionResult Get()
         {
             var result = _tasksService.GetAllTaskDtos(x => true);
+            throw new Exception();
             return Ok(result);
         }
 
@@ -49,7 +53,7 @@ namespace Simplicity.Controllers
                 return NotFound();
             }
 
-            var result = _tasksService.GetAllTaskDtos(x => x.AssigneeID == id);
+            var result = _tasksService.GetAllTaskDtos(x => x.AssigneeID == id || x.CreatorID == id);
             return Ok(result);
         }
 
@@ -79,7 +83,7 @@ namespace Simplicity.Controllers
             
             _tasksService.SaveTicket(entity);
 
-            _hubContext.Clients.All.GetMessage(changes);
+            _messageHubService.Clients.All.GetMessage(changes);
             return Ok(entity);
         }
 
@@ -94,8 +98,10 @@ namespace Simplicity.Controllers
             var ticketName = ticket.Name;
 
             _tasksService.Delete(id);
-            _hubContext.Clients.All.GetMessage($"{ticketName} was deleted");
-            
+            var userIDAsString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            _messageHubService.Clients.User(userIDAsString).GetMessage($"{ticketName} was deleted");
+            //_hubContext.Clients.All.GetMessage($"{ticketName} was deleted");
+
             return Ok();
         }
         

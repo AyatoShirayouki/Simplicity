@@ -84,9 +84,11 @@ namespace Simplicity.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (_usersService.GetById(id) == null)
-                return NotFound();
-
+            var result = _usersService.Validate(id);
+            if (!string.IsNullOrEmpty(result))
+            {
+                return BadRequest(new { message = result });
+            }
             _usersService.Delete(id);
 
             return Ok();

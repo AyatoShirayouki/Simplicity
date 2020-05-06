@@ -9,8 +9,6 @@ namespace Simplicity.Entities
     {
         public string Username { get; set; }
 
-        public string Password { get; set; }
-
         public string Name { get; set; }
 
         public string Address { get; set; }
@@ -26,6 +24,5 @@ namespace Simplicity.Entities
         public byte[] PasswordSalt { get; set; }
 
         public virtual ICollection<UserProject> UsersProjects { get; set; }
-                
     }
 }

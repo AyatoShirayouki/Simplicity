@@ -70,8 +70,7 @@ namespace Simplicity.Controllers
             _usersService.SaveUser(user);
             return Ok();
         }
-
-        [AllowAnonymous]
+        
         [HttpPost("changePassword")]
         public IActionResult ChangePassword([FromForm]ChangePasswordVM changePasswordDto)
         {
@@ -85,14 +84,8 @@ namespace Simplicity.Controllers
             }
 
             var user = _usersService.GetUserEditDtoById(userID);
-           
-            if (user.Password != changePasswordDto.OldPassword)
-            {
-                return BadRequest(new { message = "Invalid Old password. Please fill again" });
-            }
-
-            user.Password = changePasswordDto.NewPassword;
-           _usersService.HashUserPassword(user);
+          
+            _usersService.HashUserPassword(user);
             _usersService.SaveUser(user);
             return Ok();
         }

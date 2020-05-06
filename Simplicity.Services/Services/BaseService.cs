@@ -37,28 +37,12 @@ namespace Simplicity.Services.Services
 
         public void Save(T item)
         {
-            try
-            {
-                _baseRepository.Save(item);
-                //_unitOfWork.Commit()
-            }
-            catch (Exception e)
-            {
-                //_unitOfWork.RollBack();
-            }
+            _baseRepository.Save(item);
         }
 
         public void Delete(int id)
         {
-            try
-            {
-                _baseRepository.Delete(id);
-                //_unitOfWork.Commit();
-            }
-            catch (Exception)
-            {
-                //_unitOfWork.RollBack();
-            }
+            _baseRepository.Delete(id);
         }
     }
 }

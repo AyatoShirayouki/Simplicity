@@ -9,5 +9,8 @@ namespace Simplicity
     public interface IMessageHubService
     {
         Task GetMessage(string lat);
+        //TO DO must return task
+        //void SendToUser(string userId, string message);
+        //void SendToAll(string message);
     }   
 }

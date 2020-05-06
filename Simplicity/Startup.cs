@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -147,6 +148,7 @@ namespace Simplicity
             services.AddScoped(typeof(ITicketsService), typeof(TicketsService));
             services.AddScoped(typeof(ITicketsRepository), typeof(TicketsRepository));
             services.AddSingleton(Configuration.GetSection(typeof(AppSettings).Name).Get<AppSettings>());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

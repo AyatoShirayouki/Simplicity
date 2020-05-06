@@ -16,5 +16,6 @@ namespace Simplicity.Services.ServicesInterfaces
         void SaveUser(UserEditDto userEditDto);
         UserEditDto GetUserEditDtoById(int userId);
         UserListDto GetUserListDtoById(int userId);
+        string Validate(int userId);
     }
 }

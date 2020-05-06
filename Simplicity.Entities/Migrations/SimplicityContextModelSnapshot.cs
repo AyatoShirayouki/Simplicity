@@ -56,6 +56,8 @@ namespace Simplicity.Entities.Migrations
 
                     b.Property<int>("Status");
 
+                    b.Property<int?>("UserID");
+
                     b.HasKey("ID");
 
                     b.HasIndex("AssigneeID");
@@ -63,6 +65,8 @@ namespace Simplicity.Entities.Migrations
                     b.HasIndex("CreatorID");
 
                     b.HasIndex("ProjectID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Tickets");
                 });
@@ -78,8 +82,6 @@ namespace Simplicity.Entities.Migrations
                     b.Property<DateTime?>("Birthday");
 
                     b.Property<string>("Name");
-
-                    b.Property<string>("Password");
 
                     b.Property<byte[]>("PasswordHash");
 
@@ -131,6 +133,10 @@ namespace Simplicity.Entities.Migrations
                         .WithMany("Tickets")
                         .HasForeignKey("ProjectID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Simplicity.Entities.User")
+                        .WithMany("Tickets")
+                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("Simplicity.Entities.UserProject", b =>

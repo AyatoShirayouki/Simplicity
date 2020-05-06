@@ -7,6 +7,7 @@ using Simplicity.Repositories.RepositoryInterfaces;
 using Simplicity.Services.ServicesInterfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Simplicity.Services.Services
@@ -14,12 +15,15 @@ namespace Simplicity.Services.Services
     public class UsersService : BaseService<User>, IUsersService
     {
         private readonly IUsersRepository _usersRepository;
+        private readonly ITicketsService _ticketsService;
         private readonly IMapper _mapper;
 
         public UsersService(IUsersRepository usersRepository,
+            ITicketsService ticketsService,
             IMapper mapper) : base(usersRepository)
         {
             _usersRepository = usersRepository;
+            _ticketsService = ticketsService;
             _mapper = mapper;
         }
 
@@ -118,6 +122,22 @@ namespace Simplicity.Services.Services
         {
             var user = this.GetById(userId);
             return _mapper.Map(user, new UserListDto());
+        }
+
+        public string Validate(int userId)
+        {
+            if (this.GetById(userId) == null)
+            {
+                return "User does not exists";
+            }
+
+            if (_ticketsService.GetAllTaskDtos(x=> x.CreatorID == userId || x.AssigneeID == userId)
+                .Any())
+            {
+                return "User cannot be deleted. User is has active tickets to resolve.";
+            }
+
+            return string.Empty;
         }
     }
 }
